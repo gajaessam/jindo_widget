@@ -278,7 +278,7 @@ ipcMain.on('track:context', async () => {
       openManual();
       break;
     case 'about':
-      dialogs.notify('프로그램 정보', `진도 위젯\n버전 v${app.getVersion()}\n\nⓒ 가정재연쌤 | 재배포·수정 문의: @gajae_ssam`);
+      dialogs.notify('프로그램 정보', `진도 위젯\n버전 v${app.getVersion()}\n\nⓒ 가정재연쌤 | 무단 재배포 금지 | 개선 의견: @gajae_ssam`);
       break;
     case 'quit':
       quitApp();
