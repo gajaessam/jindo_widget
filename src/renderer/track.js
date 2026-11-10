@@ -8,7 +8,7 @@ const flag = document.getElementById('flag');
 
 const BASE_W = 56;          // 기존 버전과 같은 기본 캐릭터 상자 크기(100%)
 const BASE_H = 62;
-const FOOT = 4;             // 창 아래 여백
+const FOOT = 0;             // 창 아래 여백 (0 = 작업표시줄 바로 위에 발이 닿음)
 const ALPHA_HIT = 24;       // 이 값보다 불투명한 픽셀만 클릭으로 인정
 const FLOAT_FRAME_MS = 100; // 둥둥 모드에서 확인 간격. 실제로 1픽셀이 바뀔 때만 다시 그립니다.
 const DRAG_START_PX = 4;
@@ -99,6 +99,40 @@ function drawFitted(ch) {
   ch.fig.replaceChildren(canvas);
 }
 
+// 그림 둘레의 투명한 빈칸을 잘라 냅니다. 그래야 캐릭터 발이 작업표시줄에 딱 닿아요.
+function trimTransparent(bitmap) {
+  const w = bitmap.width;
+  const h = bitmap.height;
+  const scale = Math.min(1, 512 / Math.max(w, h)); // 큰 그림은 줄여서 경계만 찾음
+  const sw = Math.max(1, Math.round(w * scale));
+  const sh = Math.max(1, Math.round(h * scale));
+  const probe = new OffscreenCanvas(sw, sh);
+  const pc = probe.getContext('2d', { willReadFrequently: true });
+  pc.drawImage(bitmap, 0, 0, sw, sh);
+  const data = pc.getImageData(0, 0, sw, sh).data;
+  let minX = sw, minY = sh, maxX = -1, maxY = -1;
+  for (let y = 0; y < sh; y++) {
+    for (let x = 0; x < sw; x++) {
+      if (data[(y * sw + x) * 4 + 3] > 8) {
+        if (x < minX) minX = x;
+        if (x > maxX) maxX = x;
+        if (y < minY) minY = y;
+        if (y > maxY) maxY = y;
+      }
+    }
+  }
+  if (maxX < 0) return bitmap; // 전부 투명하면 그대로
+  const x0 = Math.max(0, Math.floor(minX / scale) - 1);
+  const y0 = Math.max(0, Math.floor(minY / scale) - 1);
+  const x1 = Math.min(w, Math.ceil((maxX + 1) / scale) + 1);
+  const y1 = Math.min(h, Math.ceil((maxY + 1) / scale) + 1);
+  if (x0 === 0 && y0 === 0 && x1 === w && y1 === h) return bitmap;
+  const out = new OffscreenCanvas(x1 - x0, y1 - y0);
+  out.getContext('2d').drawImage(bitmap, x0, y0, x1 - x0, y1 - y0, 0, 0, x1 - x0, y1 - y0);
+  bitmap.close();
+  return out;
+}
+
 async function loadImage(ch, key) {
   ch.imageKey = key;
   ch.bitmap = null;
@@ -115,7 +149,7 @@ async function loadImage(ch, key) {
     const blob = new Blob([res.bytes], { type: res.mime });
     const bitmap = await createImageBitmap(blob); // GIF는 첫 장면
     if (ch.imageKey !== key) { bitmap.close(); return; }
-    ch.bitmap = bitmap;
+    ch.bitmap = trimTransparent(bitmap);
     drawFitted(ch);
   } catch (err) {
     ch.broken = true;
@@ -164,7 +198,7 @@ function applyState(next) {
 function relayout(snap) {
   if (!state) return;
   const W = window.innerWidth;
-  const flagX = W - 34;
+  const flagX = W - 38;
   flag.style.left = `${flagX}px`;
   let maxW = 0;
   for (const ch of chars) {
