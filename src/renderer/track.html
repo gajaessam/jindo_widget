@@ -9,7 +9,13 @@
 </head>
 <body>
   <div id="lane"></div>
-  <div id="flag" aria-hidden="true"><div class="cloth"></div><div class="pole"></div></div>
+  <div id="flag" aria-hidden="true">
+    <svg width="32" height="60" viewBox="0 0 32 60">
+      <rect x="3" y="2" width="3.5" height="58" rx="1.75" fill="#7A6355"/>
+      <path d="M6.5 4 H29 L23.5 12.5 L29 21 H6.5 Z" fill="#FF8B6B"/>
+      <path d="M6.5 4 H29 L27.6 6.2 H6.5 Z" fill="#FFB49E"/>
+    </svg>
+  </div>
   <script src="../shared/race-layout.js"></script>
   <script src="track.js"></script>
 </body>

@@ -197,20 +197,37 @@ ipcMain.on('track:click', (_e, idx, rect) => {
   ctx.progress.open(idx, toScreenRect(rect));
 });
 
-// 사용 설명서: 설치 폴더의 PDF → 앱 안의 HTML 순서로 찾아서 엽니다.
-async function openManual() {
-  const exeDir = path.dirname(process.execPath);
-  const candidates = [
-    path.join(exeDir, 'JindoWidget-Guide.pdf'),
-    path.join(__dirname, '..', '..', 'docs', 'guide', 'index.html'),
-  ];
-  const found = candidates.find((p) => fs.existsSync(p));
-  if (!found) {
-    dialogs.notify('사용 설명서', '사용 설명서 파일을 찾지 못했어요. 진도 위젯을 다시 설치해 주세요.');
+// 사용 설명서: 앱 안의 창으로 엽니다 (PDF 프로그램을 따로 띄우지 않음)
+let manualWindow = null;
+function openManual() {
+  if (manualWindow && !manualWindow.isDestroyed()) {
+    if (manualWindow.isMinimized()) manualWindow.restore();
+    manualWindow.show();
+    manualWindow.focus();
     return;
   }
-  const err = await shell.openPath(found);
-  if (err) dialogs.notify('사용 설명서', '사용 설명서를 열지 못했어요.', null, err);
+  manualWindow = new BrowserWindow({
+    width: 600,
+    height: 780,
+    minWidth: 440,
+    minHeight: 480,
+    show: false,
+    title: '진도 위젯 사용 설명서',
+    icon: path.join(__dirname, '..', '..', 'assets', 'icon.png'),
+    autoHideMenuBar: true,
+    backgroundColor: '#FFF7F0',
+    webPreferences: { contextIsolation: true, sandbox: true, spellcheck: false },
+  });
+  manualWindow.removeMenu();
+  // 설명서 안의 링크로 다른 곳으로 이동하지 않게 막고, 인터넷 주소는 기본 브라우저로
+  manualWindow.webContents.on('will-navigate', (e) => e.preventDefault());
+  manualWindow.webContents.setWindowOpenHandler(({ url }) => {
+    if (/^https:\/\//.test(url)) shell.openExternal(url);
+    return { action: 'deny' };
+  });
+  manualWindow.once('ready-to-show', () => manualWindow.show());
+  manualWindow.on('closed', () => { manualWindow = null; });
+  manualWindow.loadFile(path.join(__dirname, '..', '..', 'docs', 'guide', 'index.html'));
 }
 
 async function toggleAutostart() {
@@ -261,7 +278,7 @@ ipcMain.on('track:context', async () => {
       openManual();
       break;
     case 'about':
-      dialogs.notify('프로그램 정보', `진도 위젯\n버전 v${app.getVersion()}\n제작: 가정재연쌤 (@gajae_ssam)`);
+      dialogs.notify('프로그램 정보', `진도 위젯\n버전 v${app.getVersion()}\n\nⓒ 가정재연쌤 | 재배포·수정 문의: @gajae_ssam`);
       break;
     case 'quit':
       quitApp();
@@ -356,11 +373,22 @@ app.on('window-all-closed', () => { /* 트랙 창이 없어도 바로 끄지 않
 
 async function start() {
   // 두 개가 켜지면 진도가 서로 덮어써지므로 하나만 실행 (옛 Python 버전과도 같은 이름의 뮤텍스)
-  if (!native.acquireSingleInstance() || !app.requestSingleInstanceLock()) {
+  // 시작 메뉴의 "사용 설명서"는 --guide 로 실행됨: 이미 켜져 있으면 그쪽에서 설명서 창만 엶
+  const wantsGuide = process.argv.includes('--guide');
+  if (!app.requestSingleInstanceLock()) {
+    if (!wantsGuide) await dialogs.notify('진도 위젯', '진도 위젯이 이미 실행 중이에요.');
+    app.exit(0);
+    return;
+  }
+  if (!native.acquireSingleInstance()) {
     await dialogs.notify('진도 위젯', '진도 위젯이 이미 실행 중이에요.');
     app.exit(0);
     return;
   }
+  app.on('second-instance', (_e, argv) => {
+    if (argv.includes('--guide')) openManual();
+  });
+  if (wantsGuide) app.whenReady().then(() => setTimeout(openManual, 800));
   const loaded = ctx.store.load();
   ctx.data = loaded.data;
   setupSaver();
@@ -390,6 +418,18 @@ async function start() {
   globalShortcut.register('Control+Shift+Q', quitApp);
 
   if (loaded.warning) dialogs.notify('저장 파일 안내', loaded.warning);
+
+  // 처음 설치해서 데이터가 없을 때만 한 번 안내. 기본값을 바로 저장해 두어 다음부터는 뜨지 않음.
+  if (loaded.isFresh) {
+    ctx.saver.flush();
+    ctx.track.webContents.once('did-finish-load', () => setTimeout(() => {
+      dialogs.showDialog({
+        title: '진도 위젯을 시작해요',
+        message: '• "+"를 눌러 반마다 캐릭터 그림을 골라 주세요.\n• 캐릭터를 클릭하면 진도창, 오른쪽 클릭하면 메뉴가 열려요.',
+        buttons: [{ label: '시작하기', kind: 'primary' }],
+      });
+    }, 1200));
+  }
 
   // 개발 확인용: JINDO_OPEN_WINDOW=class-settings|plan-settings|restore 이면 시작 후 그 창을 엽니다.
   const devWindow = {

@@ -59,11 +59,10 @@ Type: filesandordirs; Name: "{app}\locales"
 
 [Files]
 Source: "{#AppBundle}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-Source: "..\docs\JindoWidget-Guide.pdf"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{autoprograms}\진도 위젯"; Filename: "{app}\JindoWidget.exe"; WorkingDir: "{app}"
-Name: "{autoprograms}\진도 위젯 사용 설명서"; Filename: "{app}\JindoWidget-Guide.pdf"
+Name: "{autoprograms}\진도 위젯 사용 설명서"; Filename: "{app}\JindoWidget.exe"; Parameters: "--guide"; WorkingDir: "{app}"
 Name: "{autodesktop}\진도 위젯"; Filename: "{app}\JindoWidget.exe"; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Registry]
@@ -72,12 +71,18 @@ Root: HKCU; Subkey: "Software\Microsoft\Windows\CurrentVersion\Run"; ValueType: 
 
 [Run]
 Filename: "{app}\JindoWidget.exe"; Description: "진도 위젯 실행"; Flags: nowait postinstall skipifsilent
-Filename: "{app}\JindoWidget-Guide.pdf"; Description: "사용 설명서 열기"; Flags: shellexec nowait postinstall skipifsilent unchecked
 
 [Code]
 function AutoStartRegistered: Boolean;
 begin
   Result := RegValueExists(HKCU, 'Software\Microsoft\Windows\CurrentVersion\Run', 'JindoWidget');
+end;
+
+// 예전에 넣던 PDF 설명서는 지울 수 있을 때만 지움 (PDF 프로그램에 열려 있어도 설치가 멈추지 않게)
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  if CurStep = ssPostInstall then
+    DeleteFile(ExpandConstant('{app}\JindoWidget-Guide.pdf'));
 end;
 
 procedure CurUninstallStepChanged(CurUninstallStep: TUninstallStep);

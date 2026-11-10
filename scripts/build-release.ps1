@@ -1,5 +1,5 @@
 ﻿# 진도 위젯 설치 파일 만들기: release\JindoWidget-Setup-v{버전}.exe
-# 순서: 테스트 → 설명서 PDF → 앱 묶기(electron-builder) → 설치 파일(Inno Setup)
+# 순서: 테스트 → 앱 묶기(electron-builder) → 설치 파일(Inno Setup)
 #   사용법: npm run release      (Inno Setup 6이 설치되어 있어야 합니다)
 
 $ErrorActionPreference = "Stop"
@@ -11,9 +11,6 @@ Write-Output "진도 위젯 v$Version 설치 파일을 만들어요."
 
 npm test
 if ($LASTEXITCODE -ne 0) { throw "자동 테스트가 실패해서 멈췄어요." }
-
-npm run guide-pdf
-if ($LASTEXITCODE -ne 0 -or -not (Test-Path "docs\JindoWidget-Guide.pdf")) { throw "설명서 PDF를 만들지 못했어요." }
 
 if (Test-Path dist) { Remove-Item dist -Recurse -Force }
 npm run pack
