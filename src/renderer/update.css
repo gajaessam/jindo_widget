@@ -1,0 +1,50 @@
+/* 업데이트 정보 창 전용 스타일. 색과 기본 모양은 settings.css를 그대로 쓴다. */
+.update-info h1 { margin-bottom: 12px; }
+
+.current { margin: 0; font-size: 15px; }
+.current strong { margin-left: 4px; }
+
+.state {
+  margin: 6px 0 0;
+  font-weight: 700;
+  word-break: keep-all;
+}
+
+.state.ready { color: #1f7a55; }
+.state.error { color: var(--accent); }
+
+.bar {
+  height: 8px;
+  margin-top: 8px;
+  overflow: hidden;
+  background: #f4ead6;
+  border-radius: 999px;
+}
+
+.bar[hidden] { display: none; }
+
+.bar span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: #2f9e74;
+  border-radius: 999px;
+  transition: width 0.3s;
+}
+
+.news {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  background: #e2f6ec;
+  border-radius: 10px;
+  color: #1f5f46;
+  font-size: 13.5px;
+  word-break: keep-all;
+}
+
+.news[hidden], .checked[hidden] { display: none; }
+.checked { margin: 4px 0 0; color: var(--muted); font-size: 12.5px; }
+
+.actions { display: flex; gap: 6px; margin-top: 10px; }
+.actions button[hidden] { display: none; }
+.actions button:disabled { cursor: default; opacity: 0.5; }

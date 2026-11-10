@@ -1,0 +1,80 @@
+/* 사용 설명서 전용 스타일. 색과 기본 모양은 settings.css를 그대로 쓴다. */
+.help { padding-bottom: 40px; }
+.help h1 { margin-bottom: 4px; }
+
+.lead {
+  margin: 0 0 14px;
+  color: var(--muted);
+}
+
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.toc a {
+  padding: 4px 11px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 13px;
+  text-decoration: none;
+}
+
+.toc a:hover { border-color: var(--ink); }
+
+.help section { scroll-margin-top: 12px; }
+.help ol, .help ul { margin: 0; padding-left: 20px; }
+.help li { margin: 5px 0; word-break: keep-all; }
+.help p { word-break: keep-all; }
+
+.help table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+.help th, .help td {
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  vertical-align: top;
+  word-break: keep-all;
+}
+
+.help th { width: 38%; font-weight: 700; }
+.help tr:last-child th, .help tr:last-child td { border-bottom: 0; }
+
+.notice {
+  margin: 10px 0 0;
+  padding: 9px 11px;
+  background: #fff1ec;
+  border-radius: 10px;
+  color: #8a3b2c;
+  font-size: 13px;
+  word-break: keep-all;
+}
+
+.help details {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.help details:last-of-type { border-bottom: 0; }
+
+.help summary {
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.help details p { margin: 6px 0 0; color: #5a4a42; font-size: 13.5px; }
+
+.help code {
+  padding: 1px 5px;
+  background: #f4ead6;
+  border-radius: 5px;
+  font-size: 12.5px;
+}

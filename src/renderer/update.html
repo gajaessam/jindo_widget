@@ -1,25 +1,29 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'">
-<title>업데이트 내려받기</title>
-<link rel="stylesheet" href="theme.css">
-<link rel="stylesheet" href="panel.css">
-<style>
-  .bar { height: 12px; border-radius: 999px; background: var(--track); overflow: hidden; }
-  .bar > i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width 0.2s; }
-  .info { font-size: 13px; color: var(--sub); font-variant-numeric: tabular-nums; }
-</style>
+  <meta charset="utf-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src data:">
+  <title>급식알리미 업데이트 정보</title>
+  <link rel="stylesheet" href="settings.css">
+  <link rel="stylesheet" href="update.css">
 </head>
 <body>
-  <div class="win panel" role="dialog" aria-labelledby="title">
-    <div class="win-head"><h2 id="title">업데이트 내려받는 중</h2></div>
-    <div class="bar" role="progressbar" aria-labelledby="info"><i id="fill"></i></div>
-    <div class="info" id="info">준비하는 중…</div>
-    <div class="btns"><button class="btn ghost" id="cancel">취소</button></div>
-  </div>
-  <script src="panel-common.js"></script>
+  <main class="update-info">
+    <h1>업데이트 정보</h1>
+
+    <section class="now">
+      <p class="current">지금 버전 <strong id="currentVersion"></strong></p>
+      <p class="state" id="state"></p>
+      <div class="bar" id="bar" hidden><span id="barFill"></span></div>
+      <p class="news" id="news" hidden></p>
+      <p class="checked" id="checkedAt" hidden></p>
+      <div class="actions">
+        <button type="button" id="checkNow">지금 확인</button>
+        <button type="button" class="primary" id="installNow" hidden>지금 업데이트</button>
+      </div>
+      <p class="hint">앱을 켤 때와 켜 둔 동안 6시간마다 자동으로 확인해요. 새 버전은 앱을 종료하거나 PC를 끌 때 알아서 설치돼요.</p>
+    </section>
+  </main>
   <script src="update.js"></script>
 </body>
 </html>

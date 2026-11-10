@@ -1,0 +1,155 @@
+:root {
+  --ink: #3b2f2a;
+  --paper: #fffdf6;
+  --page: #fff8ea;
+  --line: #e3d6bf;
+  --muted: #7a6b63;
+  --accent: #c8452f;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--ink);
+  font: 14px/1.5 "Pretendard", "Malgun Gothic", sans-serif;
+}
+
+main {
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 20px 20px 32px;
+}
+
+h1 { margin: 0 0 14px; font-size: 20px; }
+h2 { margin: 0 0 8px; font-size: 15px; }
+
+section {
+  margin-bottom: 12px;
+  padding: 14px;
+  background: var(--paper);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+}
+
+input[type="text"], input[type="search"], select {
+  width: 100%;
+  min-height: 36px;
+  padding: 6px 9px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  color: inherit;
+  font: inherit;
+}
+
+input:focus-visible, select:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+}
+
+button {
+  min-height: 32px;
+  padding: 4px 11px;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+button:hover { border-color: var(--ink); }
+button.primary { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+
+.hint { margin: 8px 0 0; color: var(--muted); font-size: 12.5px; word-break: keep-all; }
+.hint.error { color: var(--accent); }
+.current { margin: 0 0 8px; font-weight: 700; }
+
+.search {
+  display: grid;
+  grid-template-columns: 96px 1fr auto;
+  gap: 6px;
+}
+
+.results { margin: 8px 0 0; padding: 0; list-style: none; }
+.results:empty { display: none; }
+
+.results button {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 7px 10px;
+  text-align: left;
+}
+
+.results small { display: block; color: var(--muted); }
+
+.characters {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.slot {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: stretch;
+  text-align: center;
+}
+
+.slot-name { font-size: 13px; font-weight: 700; }
+
+.preview {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 84px;
+  background: #fff;
+  border: 1.5px dashed var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.preview img { max-width: 100%; max-height: 100%; object-fit: contain; }
+.slot button { min-height: 28px; padding: 1px 4px; font-size: 12.5px; }
+
+.field { display: block; margin-top: 8px; font-weight: 600; }
+.check + .field, .hint + .field, .results + .field { margin-top: 10px; }
+.field:first-of-type { margin-top: 0; }
+.field input { margin-top: 3px; font-weight: 400; }
+.field input[type="range"] { display: block; width: 100%; accent-color: var(--ink); }
+
+.check { display: flex; gap: 7px; align-items: center; margin-bottom: 5px; }
+.check input { width: 16px; height: 16px; margin: 0; accent-color: var(--ink); }
+
+.allergies {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px 6px;
+}
+
+.about {
+  padding: 2px 4px 0;
+  color: var(--muted);
+  font-size: 11.5px;
+  text-align: center;
+  opacity: 0.75;
+}
+
+.about p { margin: 2px 0; }
+
+.page-head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.page-head h1 { margin: 0; }
+.page-head button { flex: none; font-size: 13px; }
