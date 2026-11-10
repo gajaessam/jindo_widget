@@ -1,82 +1,63 @@
 <!doctype html>
 <html lang="ko">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'self'; style-src 'self'; img-src data:">
-  <title>급식알리미 설정</title>
-  <link rel="stylesheet" href="settings.css">
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' blob:; style-src 'self' 'unsafe-inline'; font-src 'self'">
+<title>반 · 캐릭터 설정</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="panel.css">
+<style>
+  .cls { display: grid; grid-template-columns: 44px 1fr auto; gap: 8px; align-items: center; }
+  .thumb { width: 44px; height: 44px; border-radius: 12px; background: var(--soft); display: grid; place-items: center; overflow: hidden; color: var(--sub); font-size: 22px; }
+  .thumb img { max-width: 40px; max-height: 40px; object-fit: contain; }
+  .cls input { padding: 7px 10px; }
+  .acts { display: flex; gap: 4px; }
+  .acts .icon-btn { width: 30px; height: 30px; font-size: 14px; }
+  .class-list { display: grid; gap: 8px; }
+  .slider { display: flex; align-items: center; gap: 10px; }
+  .slider b { font-variant-numeric: tabular-nums; min-width: 44px; text-align: right; }
+</style>
 </head>
 <body>
-  <main>
-    <header class="page-head">
-      <h1>급식알리미 설정</h1>
-      <button type="button" id="openHelp">사용 설명서</button>
-    </header>
-
-    <section>
-      <h2>우리 학교</h2>
-      <p class="current" id="currentSchool"></p>
-      <form id="schoolForm" class="search">
-        <select id="region" aria-label="지역"></select>
-        <input id="schoolName" type="search" placeholder="학교 이름 (예: 서일중)" aria-label="학교 이름" required>
-        <button type="submit" class="primary">검색</button>
-      </form>
-      <p class="hint" id="schoolHint" hidden></p>
-      <ul class="results" id="schoolResults"></ul>
-      <label class="field grade">학년
-        <select id="grade"></select>
-      </label>
-      <p class="hint">학년을 고르면 학교 학사일정에서 내 학년의 시험과 쉬는 날을 알려줘요. 학교가 일정을 늦게 올리면 다를 수 있어요.</p>
-    </section>
-
-    <section>
-      <h2>캐릭터</h2>
-      <p class="hint">기분별로 이미지를 넣을 수 있어요. 기본 표정 하나만 넣어도 나머지 상황에 그 이미지가 쓰입니다. 배경이 투명한 PNG가 가장 잘 어울려요.</p>
-      <div class="characters" id="characters"></div>
-      <p class="hint">이미지는 이 PC 안에만 저장되고 어디로도 전송되지 않아요. 개인적으로 사용할 수 있는 이미지만 넣어 주세요.</p>
-    </section>
-
-    <section>
-      <h2>말투</h2>
-      <select id="tone" aria-label="말투"></select>
-    </section>
-
-    <section>
-      <h2>메뉴 취향</h2>
-      <label class="field">좋아하는 메뉴
-        <input id="favorites" type="text" placeholder="돈까스, 치킨, 마라탕">
-      </label>
-      <label class="field">싫어하는 메뉴
-        <input id="dislikes" type="text" placeholder="가지, 콩자반">
-      </label>
-      <p class="hint">쉼표로 구분해 주세요. 메뉴 이름에 이 단어가 들어 있으면 캐릭터가 반응해요. 위젯의 메뉴에 마우스를 올려 ♥나 ✕를 눌러도 등록돼요.</p>
-    </section>
-
-    <section>
-      <h2>알레르기</h2>
-      <div class="allergies" id="allergies"></div>
-      <p class="hint">학교가 올린 알레르기 번호와 메뉴 이름을 함께 확인합니다. 그래도 놓칠 수 있고 잘못 표시될 수도 있으니, 심한 알레르기가 있다면 영양 선생님께 꼭 확인해 주세요.</p>
-    </section>
-
-    <section>
-      <h2>위젯</h2>
-      <label class="check"><input id="alwaysOnTop" type="checkbox"> 항상 다른 창 위에 표시</label>
-      <label class="check"><input id="autoStart" type="checkbox"> 윈도우를 켤 때 자동 실행</label>
-      <p class="hint" id="autoStartHint" hidden>자동 실행은 설치한 버전에서만 적용돼요.</p>
-      <label class="field">크기 <output id="scaleValue"></output>
-        <input id="scale" type="range" min="0.7" max="1.5" step="0.05">
-      </label>
-      <label class="field">투명도 <output id="opacityValue"></output>
-        <input id="opacity" type="range" min="0.4" max="1" step="0.05">
-      </label>
-    </section>
-
-    <footer class="about">
-      <p id="appVersion">급식알리미</p>
-    </footer>
-  </main>
-  <script src="../shared/lines.js"></script>
-  <script src="../shared/logic.js"></script>
+  <div class="win panel" role="dialog" aria-labelledby="title">
+    <div class="win-head"><h2 id="title">반 · 캐릭터 설정</h2><button class="icon-btn" id="x" aria-label="닫기">✕</button></div>
+    <p class="sub">바꾸는 동안 바탕 화면에 바로 미리 보여요. "저장"을 눌러야 확정되고, "닫기"를 누르면 원래대로 돌아가요.</p>
+    <div class="scroll">
+      <div class="group">
+        <div class="row-between">
+          <h3>수업하는 반</h3>
+          <div class="row-between" style="gap:6px">
+            <button class="btn round" id="minus" aria-label="반 줄이기">−</button>
+            <span class="num" id="count" aria-live="polite"></span>
+            <button class="btn round" id="plus" aria-label="반 늘리기">+</button>
+          </div>
+        </div>
+        <div class="class-list" id="list"></div>
+      </div>
+    </div>
+    <div class="group">
+      <div class="row-between">
+        <span>캐릭터 크기</span>
+        <span class="slider"><input type="range" id="scale" min="50" max="150" step="10" aria-label="캐릭터 크기"><b id="scaleVal"></b></span>
+      </div>
+      <div class="row-between">
+        <span>대기 동작</span>
+        <div class="seg" role="group" aria-label="대기 동작">
+          <button id="floatOn" aria-pressed="false">살짝 둥둥</button>
+          <button id="floatOff" aria-pressed="true">멈춤</button>
+        </div>
+      </div>
+      <div class="row-between">
+        <span>캐릭터 위 진도율 표시</span>
+        <button class="switch" id="labels" role="switch" aria-checked="true" aria-label="캐릭터 위 진도율 표시"></button>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn ghost" id="close">닫기</button>
+      <button class="btn primary" id="save">저장</button>
+    </div>
+  </div>
+  <script src="panel-common.js"></script>
   <script src="settings.js"></script>
 </body>
 </html>
