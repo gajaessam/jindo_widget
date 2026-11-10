@@ -1,0 +1,85 @@
+name: 설치 파일 만들기와 배포
+
+# main 브랜치에 올리면: 테스트 → 설치 파일 빌드 → GitHub Release에 JindoWidget-Setup-v{버전}.exe 하나 올리기
+# 같은 버전의 Release가 이미 있으면 다시 올리지 않습니다. (버전은 package.json의 version)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: 코드 받기
+        uses: actions/checkout@v4
+
+      - name: Node.js 준비
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: 버전 읽기, 이미 배포했는지 확인
+        id: ver
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          if ($version -notmatch '^\d+\.\d+\.\d+$') { throw "package.json version must be X.Y.Z: $version" }
+          "version=$version" >> $env:GITHUB_OUTPUT
+          gh release view "v$version" --repo $env:GITHUB_REPOSITORY *> $null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host "Release v$version already exists. Build only, no upload."
+            "exists=true" >> $env:GITHUB_OUTPUT
+          } else {
+            "exists=false" >> $env:GITHUB_OUTPUT
+          }
+          exit 0
+
+      - name: 패키지 설치
+        run: npm ci
+
+      - name: Inno Setup 확인
+        shell: pwsh
+        run: |
+          $iscc = Join-Path ${env:ProgramFiles(x86)} "Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) { choco install innosetup -y --no-progress }
+
+      - name: 테스트, 설명서 PDF, 앱 묶기, 설치 파일 만들기
+        shell: pwsh
+        run: ./scripts/build-release.ps1
+
+      - name: 설치 파일 보관 (Actions 결과물)
+        uses: actions/upload-artifact@v4
+        with:
+          name: JindoWidget-Setup-v${{ steps.ver.outputs.version }}
+          path: release/JindoWidget-Setup-v${{ steps.ver.outputs.version }}.exe
+          if-no-files-found: error
+
+      - name: GitHub Release 만들기
+        if: github.ref == 'refs/heads/main' && steps.ver.outputs.exists == 'false'
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = "Stop"
+          $version = "${{ steps.ver.outputs.version }}"
+          $installer = "release/JindoWidget-Setup-v$version.exe"
+          if (-not (Test-Path $installer)) { throw "Installer not found: $installer" }
+          $notes = "진도 위젯 v$version 설치 파일입니다.`n`n설치 파일을 실행하면 기존 진도 위젯 위에 덮어써지고, 진도와 메모는 그대로 이어집니다."
+          if (Test-Path "release-notes.md") { $notes = Get-Content "release-notes.md" -Raw -Encoding UTF8 }
+          gh release create "v$version" $installer `
+            --repo $env:GITHUB_REPOSITORY `
+            --title "진도 위젯 v$version" `
+            --notes "$notes" `
+            --target $env:GITHUB_SHA
+          if ($LASTEXITCODE -ne 0) { throw "GitHub Release publication failed." }
