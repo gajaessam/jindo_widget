@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'">
+<title>진도창</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="progress.css">
+</head>
+<body>
+  <div class="win bubble" id="card" role="dialog" aria-labelledby="title">
+    <div class="win-head">
+      <h2 id="title">진도</h2>
+      <button class="icon-btn" id="close" aria-label="닫기" title="닫기 (Esc)">✕</button>
+    </div>
+
+    <div class="lesson-nav">
+      <button class="icon-btn" id="prev" aria-label="이전 차시" title="이전 차시">‹</button>
+      <span class="lesson-name" id="lessonName"></span>
+      <button class="icon-btn" id="lessonMenuBtn" aria-label="차시 메뉴" title="차시 메뉴" aria-haspopup="menu">⋯</button>
+      <button class="icon-btn" id="next" aria-label="다음 차시" title="다음 차시">›</button>
+    </div>
+
+    <div class="prog">
+      <div class="bar" role="progressbar" aria-labelledby="progText" id="bar"><i id="barFill"></i></div>
+      <small id="progText"></small>
+    </div>
+
+    <ul class="list" id="list"></ul>
+    <p class="empty" id="empty" hidden>이 차시에는 아직 활동이 없어요. 아래 "+ 활동"으로 추가해 보세요.</p>
+
+    <div class="add-row">
+      <button class="btn dashed" id="addItem">+ 활동</button>
+      <button class="btn dashed" id="addLesson">+ 차시</button>
+    </div>
+
+    <label class="field" for="memo">
+      <span>이 반 메모</span>
+      <textarea id="memo" rows="2" placeholder="이 반에만 남길 메모를 적어 두세요"></textarea>
+    </label>
+
+    <div class="foot">
+      <button class="btn ghost small" id="undo" title="방금 한 계획 변경(활동 삭제, 순서 변경 등)을 되돌려요">↶ 되돌리기</button>
+      <span class="saved" id="status" aria-live="polite">저장됨</span>
+    </div>
+  </div>
+  <div class="tail" id="tail" aria-hidden="true"></div>
+
+  <div class="menu" id="menu" role="menu" hidden></div>
+
+  <script src="progress.js"></script>
+</body>
+</html>

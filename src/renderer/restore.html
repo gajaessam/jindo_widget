@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'">
+<title>백업에서 복원</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="panel.css">
+<style>
+  .list { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+  .entry {
+    display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: center; text-align: left; width: 100%;
+    background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 12px; cursor: pointer; color: var(--text);
+  }
+  .entry:hover { border-color: var(--accent); }
+  .entry[aria-checked="true"] { border-color: var(--accent); background: var(--soft); }
+  .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--line); background: var(--surface); }
+  .entry[aria-checked="true"] .dot { border: 5px solid var(--accent); }
+  .when { font-weight: 750; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+  .tag { font-size: 11.5px; font-weight: 700; color: var(--accent); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; margin-left: 6px; }
+  .info { font-size: 13px; color: var(--sub); font-variant-numeric: tabular-nums; }
+  .empty { margin: 0; padding: 18px 14px; text-align: center; color: var(--sub); font-size: 14px; line-height: 1.6; background: var(--surface); border: 1.5px dashed var(--line); border-radius: 14px; }
+</style>
+</head>
+<body>
+  <div class="win panel" role="dialog" aria-labelledby="title">
+    <div class="win-head"><h2 id="title">백업에서 복원</h2><button class="icon-btn" id="x" aria-label="닫기">✕</button></div>
+    <p class="sub">하루에 한 번, 그날 처음 저장하기 직전 상태가 자동으로 보관돼요(최근 14개). 복원하기 직전 상태도 함께 보관돼요.</p>
+    <div class="scroll">
+      <div class="list" id="list" role="radiogroup" aria-label="백업 목록"></div>
+      <p class="empty" id="empty" hidden>아직 백업이 없어요.<br>백업은 하루에 한 번, 그날 처음 저장할 때 만들어져요.</p>
+    </div>
+    <div class="btns">
+      <button class="btn ghost" id="close">닫기</button>
+      <button class="btn primary" id="run" disabled>복원하기</button>
+    </div>
+  </div>
+  <script src="panel-common.js"></script>
+  <script src="restore.js"></script>
+</body>
+</html>

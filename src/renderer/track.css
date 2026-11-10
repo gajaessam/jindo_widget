@@ -1,0 +1,30 @@
+html, body { background: transparent; overflow: hidden; width: 100%; height: 100%; user-select: none; }
+#lane { position: absolute; inset: 0; }
+
+.char {
+  position: absolute; left: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  will-change: transform; pointer-events: none;
+}
+.char.hover .tag { box-shadow: 0 3px 10px rgba(150, 80, 40, 0.28); }
+.tag {
+  background: var(--surface); color: var(--text); font-size: 12px; font-weight: 700; white-space: nowrap;
+  padding: 3px 9px; border-radius: 999px; box-shadow: 0 2px 7px rgba(80, 40, 20, 0.18);
+  font-variant-numeric: tabular-nums; line-height: 1.35;
+}
+.tag em { font-style: normal; color: var(--accent); margin-left: 3px; }
+.figure { position: relative; display: block; }
+.figure canvas { display: block; width: 100%; height: 100%; filter: drop-shadow(0 3px 3px rgba(0, 0, 0, 0.16)); }
+.placeholder {
+  width: 100%; height: 100%; border-radius: 16px; border: 2.5px dashed #D9C2B2;
+  background: rgba(255, 255, 255, 0.82); display: grid; place-items: center;
+  color: #C2A08C; font-weight: 400; line-height: 1; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+}
+.char.hover .placeholder { border-color: var(--accent); color: var(--accent); }
+
+#flag { position: absolute; bottom: 4px; display: grid; justify-items: start; pointer-events: none; }
+#flag .cloth {
+  width: 24px; height: 16px; border-radius: 2px 4px 4px 2px; position: relative; z-index: 1;
+  background: conic-gradient(#4A3328 25%, #fff 0 50%, #4A3328 0 75%, #fff 0) 0 0 / 8px 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+#flag .pole { width: 3px; height: 42px; background: #7A6355; border-radius: 2px; margin-top: -16px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }

@@ -1,0 +1,59 @@
+{
+  "name": "jindo-widget",
+  "productName": "진도 위젯",
+  "version": "1.0.0",
+  "description": "반별 캐릭터가 수업 진도만큼 바탕 화면 위를 걸어가는 Windows 위젯",
+  "author": "가정재연쌤 (@gajae_ssam)",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "src/main/main.js",
+  "repository": "https://github.com/gajaessam/jindo_widget",
+  "scripts": {
+    "start": "electron .",
+    "try": "node scripts/try-with-copy.js",
+    "test": "node --test \"test/*.test.js\"",
+    "check-data": "node scripts/check-data.js",
+    "icon": "electron scripts/make-icon.js",
+    "guide-pdf": "electron scripts/make-guide-pdf.js",
+    "pack": "electron-builder --win dir --x64",
+    "release": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build-release.ps1"
+  },
+  "build": {
+    "appId": "kr.gajaessam.jindowidget",
+    "productName": "진도 위젯",
+    "executableName": "JindoWidget",
+    "copyright": "가정재연쌤 (@gajae_ssam)",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "src/**",
+      "assets/icon.png",
+      "assets/fonts/**",
+      "package.json",
+      "!**/*.map"
+    ],
+    "asarUnpack": [
+      "node_modules/koffi/**"
+    ],
+    "electronLanguages": [
+      "ko",
+      "en-US"
+    ],
+    "win": {
+      "icon": "assets/icon.ico",
+      "target": "dir",
+      "signAndEditExecutable": true
+    }
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "electron": "45.2.3",
+    "electron-builder": "26.0.12"
+  },
+  "dependencies": {
+    "koffi": "3.3.7"
+  }
+}

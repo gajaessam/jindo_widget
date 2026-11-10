@@ -1,0 +1,66 @@
+/* 진도 위젯 공통 디자인 (A. 살구 크림) */
+@font-face {
+  font-family: 'Pretendard JW';
+  src: url('../../assets/fonts/PretendardVariable.woff2') format('woff2-variations');
+  font-weight: 45 920;
+  font-display: block;
+}
+:root {
+  --bg: #FFF7F0;
+  --surface: #FFFFFF;
+  --line: #F2DFD1;
+  --text: #4A3328;
+  --sub: #9B7F70;
+  --accent: #FF8B6B;
+  --accent-hover: #F47755;
+  --accent-ink: #FFFFFF;
+  --soft: #FFE7DC;
+  --track: #F6E6DA;
+  --danger: #D2513C;
+  --ok: #5DBB7E;
+  --shadow: rgba(150, 80, 40, 0.18);
+  --font: 'Pretendard JW', 'Malgun Gothic', '맑은 고딕', sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { margin: 0; font-family: var(--font); color: var(--text); -webkit-font-smoothing: antialiased; }
+button { font: inherit; }
+
+/* 창 공통 (투명 창 안에 둥근 카드) */
+.win {
+  background: var(--bg); color: var(--text); border-radius: 22px; padding: 18px;
+  box-shadow: 0 10px 26px var(--shadow), 0 1px 4px rgba(0, 0, 0, 0.08);
+  display: grid; gap: 14px;
+}
+.win-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; -webkit-app-region: drag; }
+.win-head h2 { margin: 0; font-size: 18px; font-weight: 750; letter-spacing: -0.01em; }
+.win-head button, .win-head input { -webkit-app-region: no-drag; }
+
+.icon-btn {
+  color: var(--sub); background: transparent; border: 0; cursor: pointer;
+  width: 32px; height: 32px; border-radius: 10px; display: grid; place-items: center; font-size: 17px; line-height: 1; padding: 0;
+}
+.icon-btn:hover { background: var(--soft); color: var(--text); }
+.icon-btn:disabled { opacity: 0.35; cursor: default; background: transparent; }
+
+.btn {
+  font-weight: 700; font-size: 14px; cursor: pointer; border-radius: 12px; padding: 9px 16px;
+  border: 1.5px solid var(--line); background: var(--surface); color: var(--text); white-space: nowrap;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn.primary:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.btn.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
+.btn.ghost { background: transparent; border-color: transparent; color: var(--sub); }
+.btn.ghost:hover { background: var(--soft); color: var(--text); }
+.btn:disabled { opacity: 0.45; cursor: default; }
+.btns { display: flex; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+input[type="text"], textarea {
+  font: inherit; font-size: 14px; color: var(--text); background: var(--surface);
+  border: 1.5px solid var(--line); border-radius: 12px; padding: 9px 12px; width: 100%; resize: none;
+}
+input[type="text"]:focus, textarea:focus { border-color: var(--accent); outline: none; }

@@ -1,0 +1,68 @@
+html, body { background: transparent; overflow: hidden; }
+body { padding: 14px 16px 20px; display: flex; flex-direction: column; }
+.bubble { position: relative; display: flex; flex-direction: column; gap: 12px; min-height: 0; flex: 0 1 auto; overflow: hidden; }
+.bubble > * { flex: none; }
+
+.tail {
+  position: absolute; bottom: 10px; left: 50%; width: 20px; height: 20px; margin-left: -10px;
+  background: var(--bg); transform: rotate(45deg); border-radius: 0 0 6px 0;
+  box-shadow: 5px 5px 8px -5px var(--shadow); z-index: 0;
+}
+.bubble { z-index: 1; }
+
+.win-head h2 { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.lesson-nav {
+  display: flex; align-items: center; gap: 4px; background: var(--surface);
+  border: 1.5px solid var(--line); border-radius: 14px; padding: 4px;
+}
+.lesson-name { flex: 1; min-width: 0; text-align: center; font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding: 0 4px; }
+
+.prog { display: grid; gap: 6px; }
+.bar { height: 10px; border-radius: 999px; background: var(--track); overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width 0.35s ease; }
+.prog small { color: var(--sub); font-size: 13px; font-variant-numeric: tabular-nums; }
+
+.list { display: grid; gap: 6px; margin: 0; padding: 2px; list-style: none; overflow-y: auto; flex: 0 1 auto; min-height: 0; }
+.row {
+  display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1.5px solid var(--line);
+  border-radius: 14px; padding: 6px 4px 6px 8px; min-height: 44px;
+}
+.row .txt { flex: 1; min-width: 0; font-size: 14.5px; line-height: 1.4; word-break: keep-all; overflow-wrap: anywhere; cursor: pointer; }
+.row.done .txt { color: var(--sub); text-decoration: line-through; text-decoration-color: rgba(155, 127, 112, 0.5); }
+.row.menu-open { border-color: var(--accent); }
+.chk {
+  width: 26px; height: 26px; flex: none; border-radius: 8px; border: 2px solid var(--line); background: var(--surface);
+  cursor: pointer; display: grid; place-items: center; padding: 0; color: transparent; font-size: 15px; font-weight: 900; line-height: 1;
+}
+.chk:hover { border-color: var(--accent); }
+.row.done .chk { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.empty { margin: 0; color: var(--sub); font-size: 13.5px; text-align: center; padding: 10px 6px; background: var(--surface); border: 1.5px dashed var(--line); border-radius: 14px; }
+
+.add-row { display: flex; gap: 8px; }
+.add-row .btn { flex: 1; }
+.btn.dashed { border-style: dashed; color: var(--sub); }
+.btn.dashed:hover { color: var(--text); }
+.btn.small { padding: 6px 10px; font-size: 13px; }
+
+.field { display: grid; gap: 6px; }
+.field > span { font-size: 13px; font-weight: 700; color: var(--sub); }
+
+.foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: -2px; }
+.saved { font-size: 13px; color: var(--sub); display: flex; align-items: center; gap: 6px; white-space: nowrap; }
+.saved::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--ok); }
+.saved.saving::before { background: #E9B44C; }
+.saved.error { color: var(--danger); font-weight: 700; }
+.saved.error::before { background: var(--danger); }
+
+/* ⋯ 메뉴: 누른 줄 바로 옆에 */
+.menu {
+  position: absolute; z-index: 10; min-width: 150px;
+  background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 6px;
+  box-shadow: 0 10px 24px var(--shadow); display: grid;
+}
+.menu button { text-align: left; background: none; border: 0; color: var(--text); padding: 8px 10px; border-radius: 9px; cursor: pointer; font-size: 14px; }
+.menu button:hover:not(:disabled), .menu button:focus-visible { background: var(--soft); outline: none; }
+.menu button:disabled { color: var(--sub); opacity: 0.55; cursor: default; }
+.menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 2px; }
+.menu .danger { color: var(--danger); }

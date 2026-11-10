@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'">
+<title>업데이트 내려받기</title>
+<link rel="stylesheet" href="theme.css">
+<link rel="stylesheet" href="panel.css">
+<style>
+  .bar { height: 12px; border-radius: 999px; background: var(--track); overflow: hidden; }
+  .bar > i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width 0.2s; }
+  .info { font-size: 13px; color: var(--sub); font-variant-numeric: tabular-nums; }
+</style>
+</head>
+<body>
+  <div class="win panel" role="dialog" aria-labelledby="title">
+    <div class="win-head"><h2 id="title">업데이트 내려받는 중</h2></div>
+    <div class="bar" role="progressbar" aria-labelledby="info"><i id="fill"></i></div>
+    <div class="info" id="info">준비하는 중…</div>
+    <div class="btns"><button class="btn ghost" id="cancel">취소</button></div>
+  </div>
+  <script src="panel-common.js"></script>
+  <script src="update.js"></script>
+</body>
+</html>

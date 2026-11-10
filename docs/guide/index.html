@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>진도 위젯 사용 설명서</title>
+<style>
+  @font-face { font-family: 'Pretendard JW'; src: url('../../assets/fonts/PretendardVariable.woff2') format('woff2-variations'); font-weight: 45 920; }
+  :root { --bg: #FFF7F0; --surface: #fff; --line: #F2DFD1; --text: #4A3328; --sub: #8E7264; --accent: #FF8B6B; --soft: #FFE7DC; }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: 'Pretendard JW', 'Malgun Gothic', sans-serif; font-size: 15px; line-height: 1.7; word-break: keep-all; }
+  main { max-width: 720px; margin: 0 auto; padding: 36px 24px 48px; }
+  h1 { font-size: 28px; margin: 0 0 2px; letter-spacing: -0.02em; }
+  .lead { color: var(--sub); margin: 0 0 20px; }
+  h2 { font-size: 18px; margin: 26px 0 8px; letter-spacing: -0.01em; break-after: avoid; }
+  h2 .no { display: inline-grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 14px; margin-right: 8px; vertical-align: 2px; }
+  p, li { margin: 4px 0; }
+  ul { padding-left: 22px; }
+  kbd { font-family: inherit; font-size: 13px; background: var(--surface); border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 0 6px; }
+  code { font-family: Consolas, monospace; font-size: 13px; background: var(--soft); border-radius: 5px; padding: 1px 5px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 8px 0; }
+  .card { background: var(--surface); border: 1.5px solid var(--line); border-radius: 14px; padding: 10px 14px; break-inside: avoid; }
+  .card b { display: block; color: var(--accent); }
+  .warn { background: var(--surface); border: 1.5px solid var(--line); border-left: 5px solid #D2513C; border-radius: 14px; padding: 10px 14px; margin: 10px 0; break-inside: avoid; }
+  footer { margin-top: 32px; color: var(--sub); font-size: 12.5px; border-top: 1px solid var(--line); padding-top: 10px; }
+  @media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+  @media print { body { background: #fff; font-size: 13px; } main { padding: 0; max-width: none; } }
+</style>
+</head>
+<body>
+<main>
+  <h1>진도 위젯 사용 설명서</h1>
+  <p class="lead">반별 캐릭터가 수업 진도만큼 바탕 화면 위를 걸어가요. 이것만 알면 돼요.</p>
+
+  <h2><span class="no">1</span>설치</h2>
+  <p><code>JindoWidget-Setup-v버전.exe</code>를 실행하면 끝이에요. 관리자 권한은 필요 없어요. 예전 버전을 쓰고 있었다면 그대로 덮어써지고 진도도 이어져요.</p>
+  <div class="warn">파란 <b>"Windows의 PC 보호"</b> 창이 뜨면 <b>추가 정보 → 실행</b>을 누르세요. (코드 서명을 하지 않아서 뜨는 경고예요)</div>
+
+  <h2><span class="no">2</span>기본 사용법</h2>
+  <div class="grid">
+    <div class="card"><b>캐릭터 왼쪽 클릭</b>그 반 진도창이 열려요. 활동을 체크하면 캐릭터가 앞으로 걸어가요.</div>
+    <div class="card"><b>캐릭터 오른쪽 클릭</b>메뉴가 열려요. 설정, 백업 복원, 자동 실행, 종료가 있어요.</div>
+    <div class="card"><b>"+" 모양 누르기</b>그 반 캐릭터 이미지를 골라요. (투명 배경 PNG 추천)</div>
+    <div class="card"><b>캐릭터 끌기</b>잠깐 옮길 수 있어요. 놓으면 제자리로 돌아가요.</div>
+  </div>
+  <p>진도창에서는 ‹ › 로 차시를 넘기고, <b>⋯</b>로 활동을 고치거나 지우고, <b>+ 활동</b> / <b>+ 차시</b>로 추가해요. 실수했으면 <b>↶ 되돌리기</b>. 모든 내용은 <b>자동 저장</b>돼요.</p>
+  <p>차시와 활동은 <b>모든 반이 함께</b> 써요. 체크와 메모만 반마다 따로예요.</p>
+
+  <h2><span class="no">3</span>설정 (오른쪽 클릭 메뉴)</h2>
+  <ul>
+    <li><b>반 · 캐릭터 설정</b>: 반 개수와 이름, 캐릭터 이미지·크기, 대기 동작</li>
+    <li><b>수업 계획 설정</b>: 차시·활동을 한 화면에서 고치기. <b>⠿</b>를 끌어서 순서 바꾸기</li>
+    <li><b>백업에서 복원</b>: 하루 한 번 자동으로 남는 백업으로 되돌리기</li>
+    <li><b>자동 실행</b>: 켜 두면 컴퓨터를 켤 때 저절로 실행</li>
+    <li><b>전체 종료</b>: 끄기 (<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Q</kbd>도 돼요)</li>
+  </ul>
+
+  <h2><span class="no">4</span>꼭 알아 두세요</h2>
+  <ul>
+    <li><b>캐릭터 그림은 사용할 권리가 있는 이미지만</b> 골라 주세요. 진도 위젯에는 캐릭터 그림이 들어 있지 않아요.</li>
+    <li>진도·메모·이미지는 이 PC(<code>%APPDATA%\UsagiJindo</code>)에만 저장되고 밖으로 보내지 않아요.</li>
+    <li>새 버전이 나오면 알려 드려요. <b>내려받기</b>를 눌러야만 받아요.</li>
+  </ul>
+
+  <h2><span class="no">5</span>이럴 땐</h2>
+  <ul>
+    <li><b>캐릭터가 안 보여요</b> → 다른 창 아래에 있어요. 창을 내리거나 바탕 화면을 보세요.</li>
+    <li><b>"+"만 보여요</b> → 이미지 파일을 찾을 수 없어요. "+"를 눌러 다시 고르세요.</li>
+    <li><b>"저장 오류"가 떠요</b> → 디스크 공간을 확인하고 진도 위젯을 껐다 켜 보세요.</li>
+    <li><b>다른 PC로 옮기기</b> → 진도 위젯을 끄고 <code>%APPDATA%\UsagiJindo</code> 폴더를 새 PC의 같은 자리에 복사하세요.</li>
+    <li><b>프로그램을 지워도</b> 진도 데이터는 남아요.</li>
+  </ul>
+
+  <footer>진도 위젯 · 제작: 가정재연쌤 (@gajae_ssam) · 내려받기: github.com/gajaessam/jindo_widget · 글꼴: Pretendard (SIL OFL 1.1)</footer>
+</main>
+</body>
+</html>

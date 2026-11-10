@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'">
+<title>진도 위젯 메뉴</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  html, body { background: transparent; overflow: hidden; }
+  body { padding: 10px 14px 18px; }
+  .menu {
+    background: var(--surface); border: 1.5px solid var(--line); border-radius: 16px; padding: 6px;
+    box-shadow: 0 10px 26px var(--shadow), 0 1px 3px rgba(0, 0, 0, 0.08); display: grid; min-width: 200px;
+  }
+  .menu button {
+    display: flex; align-items: center; gap: 10px; text-align: left; background: none; border: 0; color: var(--text);
+    padding: 8px 12px; border-radius: 10px; cursor: pointer; font-size: 14px; white-space: nowrap;
+  }
+  .menu button:hover:not(:disabled), .menu button:focus-visible { background: var(--soft); outline: none; }
+  .menu button:disabled { color: var(--sub); opacity: 0.55; cursor: default; }
+  .menu button .check {
+    width: 18px; height: 18px; border-radius: 6px; border: 2px solid var(--line); display: grid; place-items: center;
+    font-size: 11px; font-weight: 900; color: transparent; margin-left: auto; flex: none;
+  }
+  .menu button[aria-checked="true"] .check { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .menu button.danger { color: var(--danger); }
+  .menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 4px; }
+  .menu .head { font-size: 12px; font-weight: 700; color: var(--sub); padding: 6px 12px 4px; }
+</style>
+</head>
+<body>
+  <div class="menu" id="menu" role="menu"></div>
+  <script src="menu.js"></script>
+</body>
+</html>

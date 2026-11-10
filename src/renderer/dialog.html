@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; font-src 'self'">
+<title>진도 위젯</title>
+<link rel="stylesheet" href="theme.css">
+<style>
+  html, body { background: transparent; overflow: hidden; }
+  body { padding: 14px 18px 24px; }
+  .win { width: 100%; }
+  .message { margin: 0; font-size: 14.5px; line-height: 1.6; white-space: pre-wrap; word-break: keep-all; overflow-wrap: anywhere; }
+  .detail { margin: 0; font-size: 12.5px; color: var(--sub); white-space: pre-wrap; overflow-wrap: anywhere; max-height: 9em; overflow: auto; }
+  .field { display: grid; gap: 6px; }
+  .field label { font-size: 13px; font-weight: 700; color: var(--sub); }
+  .error { color: var(--danger); font-size: 13px; min-height: 1em; margin: -6px 0 0; }
+</style>
+</head>
+<body>
+  <div class="win" id="card" role="dialog" aria-labelledby="title">
+    <div class="win-head"><h2 id="title"></h2><button class="icon-btn" id="close" aria-label="닫기">✕</button></div>
+    <p class="message" id="message"></p>
+    <div class="field" id="field" hidden>
+      <label for="input" id="inputLabel"></label>
+      <input type="text" id="input" maxlength="200" autocomplete="off" spellcheck="false">
+    </div>
+    <p class="error" id="error" hidden></p>
+    <p class="detail" id="detail" hidden></p>
+    <div class="btns" id="buttons"></div>
+  </div>
+  <script src="dialog.js"></script>
+</body>
+</html>
