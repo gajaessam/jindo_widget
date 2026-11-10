@@ -131,7 +131,7 @@ function createUpdater({ quitApp, saveNow }) {
       if (!file) return; // 취소
       const ok = await dialogs.confirm({
         title: '설치 파일을 받았어요',
-        message: `v${upd.version} 설치 파일을 받고 검증까지 마쳤어요.\n지금 설치할까요? 진도 위젯이 꺼진 뒤 설치 화면이 열려요.\n\nWindows가 "PC 보호" 경고를 띄우면 "추가 정보" → "실행"을 눌러 주세요.`,
+        message: `v${upd.version} 설치 파일을 받고 검증까지 마쳤어요.\n지금 설치할까요? 진도 위젯이 꺼진 뒤 설치 화면이 열려요.`,
         yes: '지금 설치', no: '나중에',
       });
       if (ok) runInstaller(file);
